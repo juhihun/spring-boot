@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.app.emp.mapper.EmpMapper">
+	<!-- 전체조회 -->
+	<select id="selectEmpAll" resultType="EmpVO">
+		SELECT empid    
+            	,empname
+            	,mgr
+            	,sal
+            	,deptid
+            	,hiredate
+		FROM emp
+		ORDER BY empid
+	</select>
+	<!-- 단건조회 -->
+	<select id="selectEmpInfo" resultType="EmpVO">
+		SELECT empid    
+            	,empname
+            	,mgr
+            	,sal
+            	,deptid
+            	,hiredate
+		FROM emp
+		WHERE empid = #{empid}
+		<!-- 
+		#{} : ? PreparedStatement => 데이터 타입에 따른 작업(따옴표에 따른 처리를함)
+		${} : ?? statement  => 데이터 타입 무시(무조건 홑따옴표 붙히지않음 ex.검색, 정렬 ,,컬럼명을 대체함)
+		 -->
+	</select>
+	<!-- 등록 deptid int값이라 >0 ,order=before를 하면 selectKey 값이 parameter로 들어감?  -->
+	<insert id="insertEmpInfo" parameterType="EmpVO">
+		<selectKey keyProperty="empid"
+					resultType="Integer"
+					order="BEFORE">
+			SELECT NVL(MAX(empid),0)+1
+			FROM emp
+		</selectKey>
+		INSERT INTO emp
+				(
+					empid    
+            		,empname
+            		,mgr
+            		,sal
+            		<if test="deptid > 0">
+            		,deptid
+            		</if>
+            		,hiredate
+				)
+			VALUES
+				(
+					<!--  emp_seq.NEXTVAL -->
+					#{empid}
+					,#{empname}
+					,#{mgr}
+					,#{sal}
+					<if test="deptid > 0">
+						,#{deptid}
+					</if>
+					<choose>
+            			<when test="hiredate != null">
+							,#{hiredate}
+						</when>
+            			<otherwise>
+            				,sysdate
+            			</otherwise>
+            		</choose>
+				)
+	</insert>
+	
+	<!-- 수정 parameterType : 매개변수 한개만 받을수잇기때문에 두개변수 받는경우 생략가능-->
+	<update id="updateEmpInfo">
+		UPDATE emp
+		SET empname = #{emp.empname}
+			,sal = #{emp.sal}
+			,mgr = #{emp.mgr}
+			,deptid = #{emp.deptid}
+		WHERE empid = #{id}
+	</update>
+	
+	<!-- 삭제 매개변수값 여기서 지정하는대로 의미없  -->
+	<delete id="deleteEmpInfo" parameterType="int">
+		DELETE FROM emp
+		WHERE empid =#{eid}
+	</delete> 
+</mapper>
