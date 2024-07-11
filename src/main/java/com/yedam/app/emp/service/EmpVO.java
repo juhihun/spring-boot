@@ -15,7 +15,7 @@ public class EmpVO {
 	private double sal;
 	private int deptid;
 	@DateTimeFormat(pattern="yyyy-MM-dd") //파라미터 자동변환
-	private Date hiredate; // 2024/07/01 -> 2024-07-01 json타입으로 보낼땐 상관없음.
+	private Date hiredate; // 2024/07/01 -> 2024-07-01 json타입으로 보낼땐 상관없음. query 타입으로 보낼때 필요
 	
 	
 }
