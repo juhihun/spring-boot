@@ -1,12 +1,16 @@
 package com.yedam.app.emp.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yedam.app.emp.service.EmpService;
 import com.yedam.app.emp.service.EmpVO;
@@ -28,8 +32,11 @@ public class EmpController {
 		List<EmpVO> list = empService.empList();
 		// 2) 클라이언트 전달할 데이터(결과) 담기
 		model.addAttribute("empList",list);
-		// 3) 데이터(결과)를 출력할 페이지 결정
+		// 3) 데이터(결과)를 출력할 페이지 결정 emp앞 /금지(경로가 비게됨 ex. //emp/list)
 		return "emp/list";
+		//classpath:/templates/		emp/list	.html
+		//prefix 					return		suffix
+		// => classpath:/templates/emp/list.html
 	}
 	
 	//단건조회
@@ -62,15 +69,36 @@ public class EmpController {
 		return url;
 	}
 	
-	//수정 - 수정을 위한 페이지 요청
-	//@GetMapping("empUpdate")
+	//수정 - 수정을 위한 페이지 요청-> 단건조회
+	@GetMapping("empUpdate")
+	public String empUpdateForm(@RequestParam Integer empid,
+								Model model) {
+		EmpVO empVO = new EmpVO();
+		empVO.setEmpid(empid);
+		EmpVO findVO = empService.empInfo(empVO);
+		model.addAttribute("empInfo", findVO);
+		return "emp/update";
+	}
 	
 	//수정 - DB에 등록하는 처리(연산, AJAX => QueryString) content type을 달리해서 적용
-	
-	//수정 - DB에 등록하는 처리(연산, AJAX => JSON)
+	@PostMapping("empUpdate")
+	@ResponseBody //=> AJAX 사용할 때 기입, 요청값을 페이지 그대로 전달-> return 값을 페이지로 하지않음
+	public Map<String, Object> empUpdateAJAXQueryString(EmpVO empVO) {
+		return empService.empUpdate(empVO);
+	}
+	//수정 - DB에 등록하는 처리(연산, AJAX => JSON : @RequestBody)
+	//@PostMapping("empUpdate")
+	@ResponseBody //=> AJAX 사용할 때 기입, 요청값을 페이지 그대로 전달-> return 값을 페이지로 하지않음
+	public Map<String, Object> empUpdateAJAXJSON(@RequestBody EmpVO empVO) {
+		return empService.empUpdate(empVO);
+	}
 	
 	//삭제 - 페이지 x , 처리만 진행
-	
+	@GetMapping("empDelete")
+	public String empDelete(EmpVO empVO) {
+		empService.empDelete(empVO);
+		return "redirect:empList";
+	}
 	
 	
 }

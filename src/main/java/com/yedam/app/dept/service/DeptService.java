@@ -1,4 +1,4 @@
-package com.yedam.app.emp.service;
+package com.yedam.app.dept.service;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,7 @@ public interface DeptService {
 	public List<DeptVO> deptList();
 	
 	//사원정보 조회
-	public DeptVO deptInfo(DeptVO DeptVO);
+	public DeptVO deptInfo(DeptVO deptVO);
 	
 	//사원정보 등록( 등록,수정,삭제 return int 로 안받아도됨, Map를 많이 씀)
 	public int deptInsert(DeptVO deptVO);

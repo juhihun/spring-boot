@@ -1,11 +1,10 @@
-package com.yedam.app.emp.mapper;
+package com.yedam.app.dept.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.yedam.app.emp.service.DeptVO;
-import com.yedam.app.emp.service.EmpVO;
+import com.yedam.app.dept.service.DeptVO;
 
 public interface DeptMapper {
 	//전체조회

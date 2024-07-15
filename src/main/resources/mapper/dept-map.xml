@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.app.dept.mapper.DeptMapper">
+	<!-- 전체조회 -->
+	<select id="selectDeptAll" resultType="DeptVO">
+		SELECT deptno   
+            	,dname
+            	,loc
+            	,hiredate
+		FROM dept
+		ORDER BY deptno
+	</select>
+	<!-- 단건조회 -->
+	<select id="selectDeptInfo" resultType="DeptVO">
+		SELECT deptno    
+            	,dname
+            	,loc
+            	,hiredate
+		FROM dept
+		WHERE deptno = #{deptno}
+		<!-- 
+		#{} : ? PreparedStatement => 데이터 타입에 따른 작업(따옴표에 따른 처리를함)
+		${} : ?? statement  => 데이터 타입 무시(무조건 홑따옴표 붙히지않음 ex.검색, 정렬 ,,컬럼명을 대체함)
+		 -->
+	</select>
+	<!-- 등록 deptid int값이라 >0 ,order=before를 하면 selectKey 값이 parameter로 들어감?  -->
+	<insert id="insertDeptInfo" parameterType="DeptVO">
+		<selectKey keyProperty="deptno"
+					resultType="Integer"
+					order="BEFORE">
+			SELECT NVL(MAX(deptno),0)+1
+			FROM dept
+		</selectKey>
+		INSERT INTO dept
+				(
+					deptno
+	            	,dname
+    	        	,loc
+        	    	,hiredate
+				)
+			VALUES
+				(
+					<!--  emp_seq.NEXTVAL -->
+					#{deptno}
+					,#{dname}
+					,#{loc}
+					<choose>
+            			<when test="hiredate != null">
+							,#{hiredate}
+						</when>
+            			<otherwise>
+            				,sysdate
+            			</otherwise>
+            		</choose>
+				)
+	</insert>
+	
+	<!-- 수정 parameterType : 매개변수 한개만 받을수잇기때문에 두개변수 받는경우 생략가능-->
+	<update id="updateDeptInfo">
+		UPDATE dept
+		SET dname = #{dept.dname}
+			,loc = #{dept.loc}
+		WHERE deptno = #{no}
+	</update>
+	
+	<!-- 삭제 매개변수값 여기서 지정하는대로 의미없  -->
+	<delete id="deleteDeptInfo" parameterType="int">
+		DELETE FROM dept
+		WHERE deptno = #{no}
+	</delete> 
+</mapper>

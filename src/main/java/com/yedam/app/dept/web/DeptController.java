@@ -1,4 +1,4 @@
-package com.yedam.app.emp.web;
+package com.yedam.app.dept.web;
 
 import java.util.List;
 
@@ -8,9 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.yedam.app.emp.service.DeptService;
-import com.yedam.app.emp.service.DeptVO;
-import com.yedam.app.emp.service.EmpVO;
+import com.yedam.app.dept.service.DeptService;
+import com.yedam.app.dept.service.DeptVO;
 
 @Controller
 public class DeptController {
@@ -43,7 +42,7 @@ public class DeptController {
 	//등록 - DB에 등록하는 처리(연산, submit->커맨트객체사용)
 	@PostMapping("deptInsert")
 	public String deptInsertProcess(DeptVO deptVO, Model model) {
-		int deptInsert = deptService.deptInsert(deptVO);
+		int deptInsert = deptService. deptInsert(deptVO);
 		String url = null;
 
 		if(deptInsert > -1) {

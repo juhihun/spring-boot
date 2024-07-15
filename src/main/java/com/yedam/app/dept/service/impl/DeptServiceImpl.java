@@ -1,4 +1,4 @@
-package com.yedam.app.emp.service.impl;
+package com.yedam.app.dept.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,14 +7,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yedam.app.emp.mapper.DeptMapper;
-import com.yedam.app.emp.service.DeptService;
-import com.yedam.app.emp.service.DeptVO;
+import com.yedam.app.dept.mapper.DeptMapper;
+import com.yedam.app.dept.service.DeptService;
+import com.yedam.app.dept.service.DeptVO;
+import com.yedam.app.emp.service.EmpVO;
 
-@Service
-public class DeptServiceImpl implements DeptService{
-	
-	@Autowired
+@Service // AOP가 적용될 유일한 bean 
+public class DeptServiceImpl implements DeptService {
+
+	@Autowired //테이블에 접근 필요(필드 주입 방식)
 	DeptMapper deptMapper;
 
 	@Override
@@ -23,14 +24,15 @@ public class DeptServiceImpl implements DeptService{
 	}
 
 	@Override
-	public DeptVO deptInfo(DeptVO DeptVO) {
-		return deptMapper.selectDeptInfo(DeptVO);
+	public DeptVO deptInfo(DeptVO deptVO) {
+		return deptMapper.selectDeptInfo(deptVO);
 	}
 
 	@Override
 	public int deptInsert(DeptVO deptVO) {
 		int result = deptMapper.insertDeptInfo(deptVO);
-		return result == 1? deptVO.getDeptno() : -1;
+		return result == 1 ? deptVO.getDeptno() : -1;
+
 	}
 
 	@Override
@@ -61,8 +63,4 @@ public class DeptServiceImpl implements DeptService{
 		return map;
 	}
 
-
-	
-	
-	
 }
