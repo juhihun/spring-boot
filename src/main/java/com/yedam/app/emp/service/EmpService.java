@@ -9,7 +9,7 @@ public interface EmpService {
 	public List<EmpVO> empList();
 	
 	//사원정보 조회
-	public EmpVO empInfo(EmpVO empVO);
+	public EmpVO empInfo(EmpVO empVO); 
 	
 	//사원정보 등록( 등록,수정,삭제 return int 로 안받아도됨, Map를 많이 씀)
 	public int empInsert(EmpVO empVO);

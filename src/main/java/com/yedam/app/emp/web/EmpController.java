@@ -30,11 +30,11 @@ public class EmpController {
 	public String empList(Model model) { //model = request + response
 		// 1) 기능 수행 _ 변수에 담기
 		List<EmpVO> list = empService.empList();
-		// 2) 클라이언트 전달할 데이터(결과) 담기
+		// 2) 클라이언트 전달할 데이터(결과) 담기 empList => 배열, 반복문 필요 html에 쓰일 변수값
 		model.addAttribute("empList",list);
 		// 3) 데이터(결과)를 출력할 페이지 결정 emp앞 /금지(경로가 비게됨 ex. //emp/list)
-		return "emp/list";
-		//classpath:/templates/		emp/list	.html
+		return "emp/list";	
+		//classpath:/templates/		emp/list	.html ->파일경로/파일이름/파일형식
 		//prefix 					return		suffix
 		// => classpath:/templates/emp/list.html
 	}
@@ -45,12 +45,15 @@ public class EmpController {
 		EmpVO findVO = empService.empInfo(empVO);
 		model.addAttribute("empInfo",findVO);
 		return "emp/info";
+		//경로 -> classpath:/templates/emp/info.html
 	}
 	
 	//등록 - 등록을 위한 페이지 요청
 	@GetMapping("empInsert")
 	public String empInsertForm() {
 		return "emp/insert";
+		//prefix 				   return	suffix
+		// => classpath:/templates/emp/list.html
 	}
 	
 	//등록 - DB에 등록하는 처리(연산, submit->커맨트객체사용)
@@ -81,13 +84,13 @@ public class EmpController {
 	}
 	
 	//수정 - DB에 등록하는 처리(연산, AJAX => QueryString) content type을 달리해서 적용
-	@PostMapping("empUpdate")
+	//@PostMapping("empUpdate")
 	@ResponseBody //=> AJAX 사용할 때 기입, 요청값을 페이지 그대로 전달-> return 값을 페이지로 하지않음
 	public Map<String, Object> empUpdateAJAXQueryString(EmpVO empVO) {
 		return empService.empUpdate(empVO);
 	}
 	//수정 - DB에 등록하는 처리(연산, AJAX => JSON : @RequestBody)
-	//@PostMapping("empUpdate")
+	@PostMapping("empUpdate")
 	@ResponseBody //=> AJAX 사용할 때 기입, 요청값을 페이지 그대로 전달-> return 값을 페이지로 하지않음
 	public Map<String, Object> empUpdateAJAXJSON(@RequestBody EmpVO empVO) {
 		return empService.empUpdate(empVO);
@@ -97,6 +100,7 @@ public class EmpController {
 	@GetMapping("empDelete")
 	public String empDelete(EmpVO empVO) {
 		empService.empDelete(empVO);
+		//삭제 후 목록으로 이동
 		return "redirect:empList";
 	}
 	

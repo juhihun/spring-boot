@@ -45,7 +45,7 @@ public class EmpServiceImpl implements EmpService {
 		}
 		map.put("result", isSuccessed);
 		map.put("target", empVO);
-		
+		//network -> reponse에서 return 값 확인
 		return map;
 	}
 
