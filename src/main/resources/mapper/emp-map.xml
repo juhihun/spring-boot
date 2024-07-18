@@ -70,10 +70,14 @@
 	<!-- 수정 parameterType : 매개변수 한개만 받을수잇기때문에 두개변수 받는경우 생략가능-->
 	<update id="updateEmpInfo">
 		UPDATE emp
-		SET empname = #{emp.empname}
-			,sal = #{emp.sal}
+		<set>
+			sal = #{emp.sal}
 			,mgr = #{emp.mgr}
 			,deptid = #{emp.deptid}
+			<if test="emp.empname != null and !emp.empname.equals('')">
+			,empname = #{emp.empname}
+			</if>
+		</set>
 		WHERE empid = #{id}
 	</update>
 	
